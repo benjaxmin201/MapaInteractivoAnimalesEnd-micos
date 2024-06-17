@@ -1,5 +1,6 @@
 # MapaInteractivoAnimalesEndemicos
 Proyecto final para el bootcamp de desarrollador fullstack Java de Generation Chile.
+
 Integrantes proyecto:
 1. Paula Vargas
 2. Henry Almonacid
