@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CentroRepository extends JpaRepository<Centro, Integer> {
+
+    Centro findByNombre(String nombre);
 }

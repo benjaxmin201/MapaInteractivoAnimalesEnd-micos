@@ -12,7 +12,7 @@ public class CentroService {
     @Autowired
     private CentroRepository centroRepository;
 
-    public Centro obtenerCentroPorId(Long id) {
+    public Centro obtenerCentroPorId(Integer id) {
         return centroRepository.getReferenceById(id);
     }
 
