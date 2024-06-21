@@ -17,4 +17,14 @@ public class Centro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    private String nombre;
+
+    private String tipocentro;
+
+    private String direccion;
+
+    @ManyToOne
+    @JoinColumn(name = "region_id")
+    private Region centroRegion;
 }
