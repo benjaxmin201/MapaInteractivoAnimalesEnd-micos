@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class UsuarioService {
     @Autowired
-    private UsuarioRepository usuariosrepository;
+    private UsuarioRepository usuariosRepository;
 
     public Usuario getUsuarioById(Integer id) {
-        return usuariosrepository.getReferenceById(id);
+        return usuariosRepository.getReferenceById(id);
     }
 }
