@@ -20,6 +20,6 @@ public class Region {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToMany(mappedBy = "region")
+    @OneToMany(mappedBy = "regiones")
     private List<Centro> centroRegion;
 }
