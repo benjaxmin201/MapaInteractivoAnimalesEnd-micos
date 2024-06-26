@@ -10,7 +10,11 @@ public class RegionService {
     @Autowired
     private RegionRepository regionRepository;
 
-    public Region getRegionById(Integer id) {
+    public Region getRegionById(Long id) {
         return regionRepository.getReferenceById(id);
+    }
+
+    public Region actualizarRegion(Region region) {
+        return regionRepository.save(region);
     }
 }
