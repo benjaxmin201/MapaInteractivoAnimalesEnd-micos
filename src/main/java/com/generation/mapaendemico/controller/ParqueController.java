@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 @RestController
@@ -17,10 +18,32 @@ import javax.validation.Valid;
 public class ParqueController {
     @Autowired
     private ParqueService parqueService;
+
     @GetMapping("/nombre")
-    public String getParqueByNombre(@PathVariable String nombre){
+    public ResponseEntity<String> findByNombre(@PathVariable String nombre) {
         Parque parqueSolicitado = parqueService.findByNombre(nombre);
-        return parqueSolicitado.getNombre();
+
+        if (parqueSolicitado != null) {
+            return new ResponseEntity<>(parqueSolicitado.getNombre(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Parque no encontrado", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Parque> findById(@PathVariable int id){
+       Parque parque = parqueService.findById(id);
+       if(parque != null) {
+           return new ResponseEntity<>(HttpStatus.OK);
+       }
+       else {
+           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       }
+    }
+    @GetMapping
+    public ResponseEntity<List<Parque>> getAllParque() {
+        List<Parque> parqueList = parqueService.getAllParque();
+        return ResponseEntity.ok(parqueList);
     }
 
 

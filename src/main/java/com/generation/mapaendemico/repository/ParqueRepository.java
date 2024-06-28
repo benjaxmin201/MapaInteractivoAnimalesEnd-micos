@@ -13,4 +13,6 @@ public interface ParqueRepository extends JpaRepository<Parque, Integer>
     Parque findById(int id);
 
     void deleteByNombre(String nombre);
+
+    List<Parque> getAllParque();
 }

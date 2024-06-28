@@ -7,6 +7,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class ParqueService {
@@ -15,6 +17,9 @@ public class ParqueService {
 
     public Parque findById(int id) {
         return parqueRepository.findById(id);
+    }
+    public List<Parque> getAllParque() {
+        return parqueRepository.getAllParque();
     }
     @Transactional
     public Parque findByNombre(String nombre) {
