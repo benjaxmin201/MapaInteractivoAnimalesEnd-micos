@@ -23,7 +23,7 @@ public class Region {
     private int numero;
 
     @Lob
-    @Column(name = "imagenRegion", columnDefinition = "BLOB")
+    @Column(name = "region", columnDefinition = "LONGBLOB")
     private byte[] imagenRegion;
 
     @OneToMany(mappedBy = "parqueRegiones")
