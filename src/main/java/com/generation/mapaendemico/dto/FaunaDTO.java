@@ -6,7 +6,6 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-
 public class FaunaDTO {
     @Pattern(regexp = "^[a-zA-Z ]{2,50}$", message = "ERROR: campo incorrecto")
     @NotNull(message = "ERROR: campo no puede venir vacío")
@@ -54,8 +53,8 @@ public class FaunaDTO {
     private String descripción;
 
     @Pattern(regexp = "^[1-9][0-9]*$", message = "ERROR: campo debe ser un número positivo")
-    private Integer peso;
+    private long peso;
 
     @Pattern(regexp = "^[1-9][0-9]*$", message = "ERROR: campo debe ser un número positivo")
-    private Integer altura;
+    private long altura;
 }

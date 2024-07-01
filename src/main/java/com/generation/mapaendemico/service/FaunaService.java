@@ -9,11 +9,12 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class FaunaService {
     @Autowired
     private FaunaRepository faunaRepository;
 
-    public Fauna findById(int id) {
+    public Fauna getFaunaById(long id) {
         return faunaRepository.findById(id).orElse(null);
     }
 
@@ -57,29 +58,28 @@ public class FaunaService {
         return faunaRepository.findByDescripcion(descripcion).orElse(null);
     }
 
-    public Fauna findByPeso(Integer peso) {
+    //¿Será necesario?
+    public Fauna findByPeso(long peso) {
         return faunaRepository.findByPeso(peso).orElse(null);
     }
 
-    public Fauna findByAltura(Integer altura) {
+    //¿Será necesario?
+    public Fauna findByAltura(long altura) {
         return faunaRepository.findByAltura(altura).orElse(null);
     }
 
-    public Fauna findByParquesId(int parquesId) {
+    public Fauna findByParquesId(long parquesId) {
         return faunaRepository.findByParquesId(parquesId).orElse(null);
     }
 
-    @Transactional
     public Fauna saveFauna(Fauna fauna) {
         return faunaRepository.save(fauna);
     }
 
-    @Transactional
-    public void deleteFauna(int id) {
+    public void deleteFauna(long id) {
         faunaRepository.deleteById(id);
     }
     
-    @Transactional
     public Fauna updateFaunaByNombreCientifico(String nombreCientifico, FaunaDTO faunaActualizada) {
         Fauna faunaActualizar = faunaRepository.findbyNombreCientifico(nombreCientifico);
         if (faunaActualizar != null) {

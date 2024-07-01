@@ -12,7 +12,7 @@ public class Fauna {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "ncientifico", nullable = false, length = 512)
     private String nombreCientifico;
@@ -21,11 +21,11 @@ public class Fauna {
     private String nombreComun;
     
     @Lob
-    @Column(name = "imagen", columnDefinition = "LONGBLOB")
+    @Column(name = "imagen")
     private byte[] imagen;
 
     @Lob
-    @Column(name = "imghuella", columnDefinition = "LONGBLOB")
+    @Column(name = "imghuella")
     private byte[] imghuella;
     
     @Column(name = "clase", nullable = false, length = 512)
@@ -50,10 +50,10 @@ public class Fauna {
     private String descripcion;
 
     @Column(name = "peso")
-    private int peso;
+    private long peso;
 
     @Column(name = "altura")
-    private int altura;
+    private long altura;
 
     @ManyToOne
     @JoinColumn(name = "parques_id")
