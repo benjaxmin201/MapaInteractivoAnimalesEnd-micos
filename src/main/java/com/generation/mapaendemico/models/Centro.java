@@ -1,10 +1,7 @@
 package com.generation.mapaendemico.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "centros")
@@ -12,9 +9,20 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Centro {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
+
+    private String nombre;
+
+    private String tipocentro;
+
+    private String direccion;
+
+    @ManyToOne
+    @JoinColumn(name = "region_id")
+    private Region centroRegion;
 }

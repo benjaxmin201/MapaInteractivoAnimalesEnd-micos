@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "regiones")
 @NoArgsConstructor
@@ -16,5 +18,14 @@ public class Region {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
+    private String nombre;
+    private int numero;
+
+    @Lob
+    @Column(name = "region", columnDefinition = "LONGBLOB")
+    private byte[] imagenRegion;
+
+    @OneToMany(mappedBy = "parqueRegiones")
+    private List<Region> regionesParque;
 }
