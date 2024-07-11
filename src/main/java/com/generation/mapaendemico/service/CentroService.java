@@ -1,53 +1,47 @@
 package com.generation.mapaendemico.service;
 
-import com.generation.mapaendemico.dto.CentroDTO;
 import com.generation.mapaendemico.models.Centro;
 import com.generation.mapaendemico.repository.CentroRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
+@Transactional
 public class CentroService {
 
     @Autowired
     private CentroRepository centroRepository;
 
-    public Centro obtenerCentroPorId(Long id) {
-        return centroRepository.getReferenceById(id.intValue());
+    public List<Centro> getAllCentros() {
+        return centroRepository.findAll();
     }
 
-    public Centro obtenerCentroPorNombre(String nombre) {
+    public Centro getCentroById(Long id) {
+        return centroRepository.getReferenceById(id);
+    }
+
+    public Centro getCentroByNombre(String nombre) {
         return centroRepository.findByNombre(nombre);
     }
 
-    @Transactional
-    public CentroDTO guardarNuevoCentro(CentroDTO nuevoCentro) {
-        Centro centroParaGuardar = Centro.builder()
-                .nombre(nuevoCentro.getNombreCentro())
-                .tipocentro(nuevoCentro.getTipocentroCentro())
-                .direccion(nuevoCentro.getDireccionCentro())
-                .build();
-        centroRepository.save(centroParaGuardar);
-
-        return nuevoCentro;
+    public Centro getCentroByTipo(String tipo) {
+        return centroRepository.findByTipo(tipo);
     }
 
-    @Transactional
-    public CentroDTO editarCentroPorNombre(CentroDTO centroEditado, String nombre) {
-        Centro centroActualizar = centroRepository.findByNombre(nombre);
-        centroActualizar.setNombre(centroEditado.getNombreCentro());
-        centroActualizar.setTipocentro(centroEditado.getTipocentroCentro());
-        centroActualizar.setDireccion(centroEditado.getDireccionCentro());
-        centroRepository.save(centroActualizar);
-        return centroEditado;
+    public Centro saveCentro(Centro centro) {
+        return centroRepository.save(centro);
     }
 
-    @Transactional
-    public void borrarCentroPorId(Integer id) {
-        if (centroRepository.existsById(id)) {
-            centroRepository.deleteById(id);
+    public Centro updateCentro(Centro centro) {
+        return centroRepository.save(centro);
+    }
+
+    public void deleteCentro(Centro centro) {
+        if (centroRepository.existsById(centro.getId())) {
+            centroRepository.deleteById(centro.getId());
         }
-        System.out.println("Centro no existe");
     }
 }

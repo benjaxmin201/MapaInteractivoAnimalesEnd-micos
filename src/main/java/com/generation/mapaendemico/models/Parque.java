@@ -2,19 +2,24 @@ package com.generation.mapaendemico.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
 @Table(name = "parques")
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
 public class Parque {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String nombre;
     private String descripcion;
-    private String regiones_Id;
 
+    @ManyToOne
+    @JoinColumn(name = "region_id")
+    private Region region;
 
+    @OneToMany(mappedBy = "parque")
+    private List<Fauna> faunas;
 }

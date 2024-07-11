@@ -3,26 +3,21 @@ package com.generation.mapaendemico.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+
 @Entity
 @Table(name = "centros")
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-@Builder
 public class Centro {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private long id;
     private String nombre;
-
-    private String tipocentro;
-
+    private String tipo;
     private String direccion;
 
     @ManyToOne
     @JoinColumn(name = "region_id")
-    private Region centroRegion;
+    private Region region;
 }

@@ -4,8 +4,10 @@ import com.generation.mapaendemico.models.Centro;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface CentroRepository extends JpaRepository<Centro, Integer> {
+import java.util.List;
 
+@Repository
+public interface CentroRepository extends JpaRepository<Centro, Long> {
     Centro findByNombre(String nombre);
+    Centro findByTipo(String tipocentro);
 }

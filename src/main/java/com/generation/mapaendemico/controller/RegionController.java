@@ -10,51 +10,81 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
-
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/regiones")
 public class RegionController {
+    private final RegionService regionService;
+
     @Autowired
-    private RegionService regionService;
-
-    @GetMapping("/regionSolicitada")
-    public String getRegionById() {
-        Region regionSolicitada = regionService.getRegionById(Long id);
-        return regionSolicitada.getNombre();
+    public RegionController(RegionService regionService) {
+        this.regionService = regionService;
     }
 
-    @GetMapping("/regiones")
-    public List<String> obtenerRegiones() {
-        return regionService.obtenerRegiones();
+    private RegionDTO convertToDTO(Region region) {
+        return RegionDTO.builder()
+                .nombre(region.getNombre())
+                .numero(region.getNumero())
+                .build();
     }
 
-    @PostMapping("/regionNueva")
-    public Region crearRegion(@Valid @RequestBody RegionDTO regionDTO) {
+    private Region convertToEntity(RegionDTO regionDTO) {
         Region region = new Region();
-        region.setNumero(regionDTO.getNumeroRegion());
-        region.setNombre(regionDTO.getNombreRegion());
-        region.setImagenRegion(regionDTO.getImagenRegion());
-        return regionService.saveRegion(region);
+        region.setNombre(regionDTO.getNombre());
+        region.setNumero(regionDTO.getNumero());
+        return region;
     }
 
-    @PutMapping("/regionExistente")
-    public ResponseEntity<?> actualizarRegion(@PathVariable long id, @RequestBody Region regionActualizada) {
-        Region regionExistente = regionService.getRegionById(id);
-        if (regionExistente == null) {
-            return ResponseEntity.notFound().build();
+    @GetMapping("/lista")
+    public ResponseEntity<List<RegionDTO>> getAllRegiones() {
+        List<Region> regionesList = regionService.getAllRegiones();
+        List<RegionDTO> regionDTOList = regionesList.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(regionDTOList, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<RegionDTO> getRegionById(@PathVariable Long id) {
+        Region region = regionService.getRegionById(id);
+        return region != null ? new ResponseEntity<>(convertToDTO(region), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/nombre/{nombre}")
+    public ResponseEntity<RegionDTO> getRegionByNombre(@PathVariable String nombre) {
+        Region region = regionService.getRegionByNombre(nombre);
+        return region != null ? new ResponseEntity<>(convertToDTO(region), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/crear")
+    public ResponseEntity<RegionDTO> createRegion(@Valid @RequestBody RegionDTO regionDTO) {
+        Region region = regionService.saveRegion(convertToEntity(regionDTO));
+        return new ResponseEntity<>(convertToDTO(region), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<RegionDTO> updateRegion(@PathVariable Long id, @Valid @RequestBody RegionDTO regionDTO) {
+        Region region = regionService.getRegionById(id);
+        if (region != null) {
+            region.setNombre(regionDTO.getNombre());
+            region.setNumero(regionDTO.getNumero());
+            Region actualizarRegion = regionService.saveRegion(region);
+            RegionDTO actualizarRegionDTO = convertToDTO(actualizarRegion);
+            return new ResponseEntity<>(actualizarRegionDTO, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        regionExistente.setNombre(regionActualizada.getNombre());
-
-        Region regionActualizadaNueva = regionService.actualizarRegion(regionExistente);
-        return ResponseEntity.ok(regionActualizadaNueva);
     }
 
-    @DeleteMapping("/borrar")
-    public ResponseEntity<?> borrarPorId(@RequestParam Long id) {
-        regionService.getRegionById(id);
-        return new ResponseEntity<>("Región borrada exitosamente", HttpStatus.OK);
+    @DeleteMapping("/borrar/{id}")
+    public ResponseEntity<Void> deleteRegion(@PathVariable Long id) {
+        if (regionService.getRegionById(id) != null) {
+            regionService.deleteRegion(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
