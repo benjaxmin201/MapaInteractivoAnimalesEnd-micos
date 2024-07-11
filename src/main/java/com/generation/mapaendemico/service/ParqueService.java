@@ -1,48 +1,46 @@
 package com.generation.mapaendemico.service;
 
-import com.generation.mapaendemico.dto.ParqueDTO;
 import com.generation.mapaendemico.models.Parque;
 import com.generation.mapaendemico.repository.ParqueRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
-
 @Service
+@Transactional
 public class ParqueService {
-    @Autowired
-    private ParqueRepository parqueRepository;
+    private final ParqueRepository parqueRepository;
 
-    public Parque findById(int id) {
-        return parqueRepository.findById(id);
+    @Autowired
+    public ParqueService(ParqueRepository parqueRepository) {
+        this.parqueRepository = parqueRepository;
     }
-    public List<Parque> getAllParque() {
-        return parqueRepository.getAllParque();
+
+    public List<Parque> getAllParques() {
+        return parqueRepository.findAll();
     }
-    @Transactional
-    public Parque findByNombre(String nombre) {
+
+    public Parque getParqueById(Long id) {
+        return parqueRepository.findById(id).orElse(null);
+    }
+
+    public Parque getParqueByNombre(String nombre) {
         return parqueRepository.findByNombre(nombre);
     }
 
-    @Transactional
     public Parque createParque(Parque parque) {
         return parqueRepository.save(parque);
     }
 
-    @Transactional
-    public ParqueDTO updateParqueByName(ParqueDTO parqueActualizado, String nombre) {
-        Parque parqueActualizar = parqueRepository.findByNombre(nombre);
-        parqueActualizar.setNombre(parqueActualizado.getNombreParque());
-        parqueActualizar.setDescripcion(parqueActualizado.getDescripcionParque());
-        parqueRepository.save(parqueActualizar);
-        return parqueActualizado;
+    public Parque updateParque(Parque parque) {
+        return parqueRepository.save(parque);
     }
 
-    @Transactional
-    public void deleteByNombre(String nombre) {
-        parqueRepository.deleteByNombre(nombre);
+    public void deleteParque(Long id) {
+        if (parqueRepository.existsById(id)) {
+            parqueRepository.deleteById(id);
+        }
     }
 
 }

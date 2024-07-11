@@ -1,31 +1,31 @@
 package com.generation.mapaendemico.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
 @Table(name = "regiones")
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 public class Region {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String nombre;
-    private int numero;
-
+    private String numero;
     @Lob
-    @Column(name = "region", columnDefinition = "LONGBLOB")
     private byte[] imagenRegion;
 
-    @OneToMany(mappedBy = "parqueRegiones")
-    private List<Region> regionesParque;
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
+    @OneToMany(mappedBy = "region")
+    private List<Parque> parques;
+
+    @OneToMany(mappedBy = "region")
+    private List<Centro> centros;
 }
